@@ -8,17 +8,34 @@
 import Foundation
 
 
-struct Response: Codable {
+struct ResponseArticle: Codable {
     
+    let status: String
     let articles : [Article]
+    let totalResults: Int
     
+    struct Article: Codable, Hashable {
+        
+        let title: String
+        let description: String?
+        let url: String?
+        let urlToImage: String?
+        let publishedAt: Date?
+        
+        var articleURL: URL? {
+            if let url = url {
+                return URL(string: url)
+            }
+            return nil
+        }
+        
+        var imageURL : URL? {
+            if let url = urlToImage {
+                return URL(string: url)
+            }
+            return nil
+        }
+        
+    }
 }
-struct Article: Codable {
-    
-    let title: String
-    let description: String?
-    let url: String?
-    let urlToImage: String?
-    let publishedAt: Date?
 
-}
