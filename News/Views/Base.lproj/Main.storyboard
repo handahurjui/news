@@ -39,13 +39,13 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xNC-rZ-Qft">
-                                                    <rect key="frame" x="8" y="9" width="83" height="35"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="96" height="49"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Y2e-Co-NUf">
-                                                    <rect key="frame" x="8" y="44" width="83" height="1"/>
+                                                    <rect key="frame" x="0.0" y="49" width="96" height="1"/>
                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="1" id="9Io-2r-HM9"/>
@@ -54,13 +54,13 @@
                                             </subviews>
                                         </view>
                                         <constraints>
-                                            <constraint firstItem="Y2e-Co-NUf" firstAttribute="leading" secondItem="czM-E1-Ys2" secondAttribute="leading" constant="8" id="4Mf-Sx-ozO"/>
-                                            <constraint firstItem="xNC-rZ-Qft" firstAttribute="top" secondItem="czM-E1-Ys2" secondAttribute="top" constant="9" id="Gmv-tx-Dw9"/>
-                                            <constraint firstItem="xNC-rZ-Qft" firstAttribute="leading" secondItem="czM-E1-Ys2" secondAttribute="leading" constant="8" id="HE7-2Q-GhQ"/>
-                                            <constraint firstItem="Y2e-Co-NUf" firstAttribute="top" secondItem="xNC-rZ-Qft" secondAttribute="bottom" id="HqH-VM-vT0"/>
-                                            <constraint firstAttribute="trailing" secondItem="Y2e-Co-NUf" secondAttribute="trailing" constant="5" id="OJY-tX-2tn"/>
-                                            <constraint firstAttribute="trailing" secondItem="xNC-rZ-Qft" secondAttribute="trailing" constant="5" id="hvV-eC-jrG"/>
-                                            <constraint firstAttribute="bottom" secondItem="Y2e-Co-NUf" secondAttribute="bottom" constant="5" id="j61-YQ-VP8"/>
+                                            <constraint firstItem="Y2e-Co-NUf" firstAttribute="top" secondItem="xNC-rZ-Qft" secondAttribute="bottom" id="3Pg-86-Ru1"/>
+                                            <constraint firstItem="Y2e-Co-NUf" firstAttribute="leading" secondItem="czM-E1-Ys2" secondAttribute="leading" id="4Mf-Sx-ozO"/>
+                                            <constraint firstItem="xNC-rZ-Qft" firstAttribute="top" secondItem="czM-E1-Ys2" secondAttribute="top" id="Gmv-tx-Dw9"/>
+                                            <constraint firstItem="xNC-rZ-Qft" firstAttribute="leading" secondItem="czM-E1-Ys2" secondAttribute="leading" id="HE7-2Q-GhQ"/>
+                                            <constraint firstAttribute="trailing" secondItem="Y2e-Co-NUf" secondAttribute="trailing" id="OJY-tX-2tn"/>
+                                            <constraint firstAttribute="trailing" secondItem="xNC-rZ-Qft" secondAttribute="trailing" id="hvV-eC-jrG"/>
+                                            <constraint firstAttribute="bottom" secondItem="Y2e-Co-NUf" secondAttribute="bottom" id="j61-YQ-VP8"/>
                                         </constraints>
                                         <connections>
                                             <outlet property="tabBarTitleLbl" destination="xNC-rZ-Qft" id="uOU-Iq-uJ8"/>

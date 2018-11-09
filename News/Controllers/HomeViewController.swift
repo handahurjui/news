@@ -201,14 +201,14 @@ extension HomeViewController:UICollectionViewDelegate , UICollectionViewDataSour
         
         return cell
     }
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize
-    {
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let width = sources[indexPath.row].name.width(withConstrainedHeight: 50, font: UIFont.systemFont(ofSize: 17.0))
         
         return CGSize(width: width + 10, height: 50)
     }
     
-    
+ 
     
     
 }
