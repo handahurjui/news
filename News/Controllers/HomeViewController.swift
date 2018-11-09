@@ -24,6 +24,8 @@ class HomeViewController: UIViewController {
     @IBOutlet weak var articlesTabelView: UITableView!
     
     @IBOutlet weak var sourcesCollectionView: UICollectionView!
+    
+    
     @IBOutlet weak var endpointSegmentedController: UISegmentedControl!
     
     lazy var  spinner : UIActivityIndicatorView = {
@@ -40,13 +42,16 @@ class HomeViewController: UIViewController {
         articlesTabelView.rowHeight = UITableView.automaticDimension
         
         // Do any additional setup after loading the view.
+        
+     
+       
         loadSources()
         loadArticles()
        
     }
     
     func loadArticles(){
-        articlesLoader.load(endpoint: .TopHeadlines, page: 1, source: "abc-news") { [weak self] (articles) in
+        articlesLoader.load(endpoint: .Everything, page: 1, source: "abc-news") { [weak self] (articles) in
             guard let strongSelf = self else { return }
             //            strongSelf.articles = Set<Article>(articles)
             strongSelf.articles = articles
@@ -64,7 +69,7 @@ class HomeViewController: UIViewController {
     }
 
     func loadMoreArticles(){
-        articlesLoader.next(endpoint: .TopHeadlines, source: "abc-news") { [weak self] (articles) in
+        articlesLoader.next(endpoint: .Everything, source: "abc-news") { [weak self] (articles) in
             guard let strongSelf = self else { return }
             strongSelf.spinner.stopAnimating()
             strongSelf.articlesTabelView.tableFooterView?.isHidden = true
@@ -78,6 +83,10 @@ class HomeViewController: UIViewController {
         networkClient.getSources(withEndpoint: .Sources) { [weak self] (sources) in
             guard let strongSelf = self else { return }
             strongSelf.sources = sources
+            strongSelf.sourcesCollectionView.reloadData()
+            let selectedIndexPath = IndexPath(item: 0, section: 0)
+            strongSelf.sourcesCollectionView.selectItem(at: selectedIndexPath, animated: false, scrollPosition: .left)
+            
         }
     }
     /*
@@ -174,4 +183,32 @@ extension HomeViewController : UISearchBarDelegate {
         
         searchBar.resignFirstResponder()
     }
+}
+extension HomeViewController:UICollectionViewDelegate , UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+    // MARK: UICollectionViewDataSource
+    
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        // #warning Incomplete implementation, return the number of sections
+        return 1
+    }
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return self.sources.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "TabBarCollectionViewCell", for: indexPath) as! TabBarCollectionViewCell
+        cell.tabBarTitleLbl.text = self.sources[indexPath.row].name
+        
+        return cell
+    }
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize
+    {
+        let width = sources[indexPath.row].name.width(withConstrainedHeight: 50, font: UIFont.systemFont(ofSize: 17.0))
+        
+        return CGSize(width: width + 10, height: 50)
+    }
+    
+    
+    
+    
 }

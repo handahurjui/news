@@ -23,9 +23,7 @@ class Loader {
     }
     
     func load(endpoint: APIClient.Endpoints,page: Int = 1,source: String = "abc-news" , completion: @escaping LoaderCompletion) {
-        if isLoading {
-            return
-        }
+        if isLoading { return }
         
         isLoading = true
         networkClient.getArticles(withEndpoint: endpoint, page: page, source: source)  { [weak self] articles in

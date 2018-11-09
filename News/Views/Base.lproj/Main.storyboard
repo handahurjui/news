@@ -18,34 +18,66 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="hgK-zn-sNp">
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="hgK-zn-sNp">
                                 <rect key="frame" x="8" y="72" width="359" height="64"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="64" id="XhU-1r-yGP"/>
                                 </constraints>
-                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="8I5-ly-2Df">
-                                    <size key="itemSize" width="50" height="50"/>
+                                <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="10" minimumInteritemSpacing="10" id="8I5-ly-2Df">
+                                    <size key="itemSize" width="96" height="50"/>
                                     <size key="headerReferenceSize" width="0.0" height="0.0"/>
                                     <size key="footerReferenceSize" width="0.0" height="0.0"/>
                                     <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 </collectionViewFlowLayout>
                                 <cells>
-                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="czM-E1-Ys2">
-                                        <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="TabBarCollectionViewCell" id="czM-E1-Ys2" customClass="TabBarCollectionViewCell" customModule="News" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="7" width="96" height="50"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
-                                            <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="96" height="50"/>
                                             <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xNC-rZ-Qft">
+                                                    <rect key="frame" x="8" y="9" width="83" height="35"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Y2e-Co-NUf">
+                                                    <rect key="frame" x="8" y="44" width="83" height="1"/>
+                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="1" id="9Io-2r-HM9"/>
+                                                    </constraints>
+                                                </view>
+                                            </subviews>
                                         </view>
+                                        <constraints>
+                                            <constraint firstItem="Y2e-Co-NUf" firstAttribute="leading" secondItem="czM-E1-Ys2" secondAttribute="leading" constant="8" id="4Mf-Sx-ozO"/>
+                                            <constraint firstItem="xNC-rZ-Qft" firstAttribute="top" secondItem="czM-E1-Ys2" secondAttribute="top" constant="9" id="Gmv-tx-Dw9"/>
+                                            <constraint firstItem="xNC-rZ-Qft" firstAttribute="leading" secondItem="czM-E1-Ys2" secondAttribute="leading" constant="8" id="HE7-2Q-GhQ"/>
+                                            <constraint firstItem="Y2e-Co-NUf" firstAttribute="top" secondItem="xNC-rZ-Qft" secondAttribute="bottom" id="HqH-VM-vT0"/>
+                                            <constraint firstAttribute="trailing" secondItem="Y2e-Co-NUf" secondAttribute="trailing" constant="5" id="OJY-tX-2tn"/>
+                                            <constraint firstAttribute="trailing" secondItem="xNC-rZ-Qft" secondAttribute="trailing" constant="5" id="hvV-eC-jrG"/>
+                                            <constraint firstAttribute="bottom" secondItem="Y2e-Co-NUf" secondAttribute="bottom" constant="5" id="j61-YQ-VP8"/>
+                                        </constraints>
+                                        <connections>
+                                            <outlet property="tabBarTitleLbl" destination="xNC-rZ-Qft" id="uOU-Iq-uJ8"/>
+                                            <outlet property="underscoreView" destination="Y2e-Co-NUf" id="mvi-Ut-8NF"/>
+                                        </connections>
                                     </collectionViewCell>
                                 </cells>
+                                <connections>
+                                    <outlet property="dataSource" destination="BYZ-38-t0r" id="whJ-gc-itM"/>
+                                    <outlet property="delegate" destination="BYZ-38-t0r" id="IDT-Cy-cUf"/>
+                                </connections>
                             </collectionView>
                             <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="DJ0-aR-aiY">
                                 <rect key="frame" x="34" y="144" width="303" height="29"/>
                                 <segments>
-                                    <segment title="First"/>
-                                    <segment title="Second"/>
+                                    <segment title="Everything"/>
+                                    <segment title="Top Headlines"/>
                                 </segments>
                             </segmentedControl>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="e8x-8g-XXp">
