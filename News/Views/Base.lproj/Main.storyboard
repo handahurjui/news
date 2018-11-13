@@ -79,6 +79,9 @@
                                     <segment title="Everything"/>
                                     <segment title="Top Headlines"/>
                                 </segments>
+                                <connections>
+                                    <action selector="endpointsFilterClicked:" destination="BYZ-38-t0r" eventType="valueChanged" id="vdE-qc-NUm"/>
+                                </connections>
                             </segmentedControl>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="e8x-8g-XXp">
                                 <rect key="frame" x="0.0" y="180" width="375" height="487"/>

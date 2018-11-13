@@ -10,9 +10,16 @@ import Foundation
 
 struct ResponseArticle: Codable {
     
-    let status: String
+//    let status: String
     let articles : [Article]
-    let totalResults: Int
+//    let totalResults: Int
+    
+    init(from decoder:Decoder) throws {
+        let codingContainer = try decoder.container(keyedBy: CodingKeys.self)
+        
+        articles = try codingContainer.decode([ResponseArticle.Article].self, forKey: .articles)
+        
+    }
     
     struct Article: Codable, Hashable {
         
@@ -36,6 +43,29 @@ struct ResponseArticle: Codable {
             return nil
         }
         
+    }
+}
+extension ResponseArticle.Article {
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        title = try container.decode(String.self, forKey: .title)
+        description = try container.decode(String.self, forKey: .description)
+        url = try container.decode(String.self, forKey: .url)
+        urlToImage = try container.decodeIfPresent(String.self, forKey: .urlToImage)
+        let dateString = try container.decode(String.self, forKey: .publishedAt)
+        let formatterFull = DateFormatter.iso8601Full
+        let formatter = DateFormatter.iso8601ss
+        if let date = formatter.date(from: dateString) {
+            publishedAt = date
+        } else {
+            if let date = formatterFull.date(from: dateString) {
+                publishedAt = date
+            } else {
+                throw DecodingError.dataCorruptedError(forKey: .publishedAt, in: container, debugDescription: "Date string does not match format expected by formatter.")
+            }
+//            throw DecodingError.dataCorruptedError(forKey: .publishedAt, in: container, debugDescription: "Date string does not match format expected by formatter.")
+            
+        }
     }
 }
 

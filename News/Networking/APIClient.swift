@@ -85,25 +85,53 @@ class APIClient {
             "authorization" : "\(self.apiKey)"
         ]
         var parameters : [String:Any] = [
-//            "country": "\(withSource)"
+            //            "country": "\(withSource)"
             "page": page,
             "sources": source
         ]
         
-       
+        
         Alamofire.request(URL(string: urlString)!, method: .get, parameters: parameters, encoding: URLEncoding.default, headers: headers).responseData { (response) in
             
             
             if let data = response.result.value {
                 let decoder = JSONDecoder()
-                decoder.dateDecodingStrategy = .iso8601
+                
+//                                decoder.dateDecodingStrategy = .iso8601
+//                decoder.dateDecodingStrategy = .formatted(DateFormatter.iso8601Full)
                 print("data: \(data)")
+                
                 do {
                     let articleResponse = try decoder.decode(ResponseArticle.self, from: data )
                     completion(articleResponse.articles)
+               
                 } catch {
-                    NSLog("Error parsing articles: \(error.localizedDescription)")
+                    NSLog("Error parsing posts: \(error.localizedDescription)")
                 }
+                
+                
+//                do {
+//                    let articleResponse = try decoder.decode(ResponseArticle.self, from: data )
+//                    completion(articleResponse.articles)
+//
+//                    decoder.dateDecodingStrategy = .iso8601
+//                    let articleResponse = try decoder.decode(ResponseArticle.self, from: data )
+//                    completion(articleResponse.articles)
+//
+//
+//                } catch {
+//
+//
+//                    NSLog("Error parsing articles: \(error.localizedDescription)")
+//                }
+                //
+                //
+                //                do {
+                //                    let articleResponse = try decoder.decode(ResponseArticle.self, from: data )
+                //                    completion(articleResponse.articles)
+                //                } catch {
+                //                    NSLog("Error parsing articles: \(error.localizedDescription)")
+                //                }
                 
             }else{
                 print("Request failed with error: ",response.result.error ?? "Description not available :(")

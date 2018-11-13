@@ -19,7 +19,12 @@ class HomeViewController: UIViewController {
 //    var articlesViewModels : [ArticleViewModel] = []
     var sources : [ResponseSource.Source] = []
     var searchBar : UISearchBar?
-    var searchWord: String = ""
+    
+    
+    var sourceFilter : String = ""
+    var endpointFilter : APIClient.Endpoints = .Everything
+    var searchWordFilter: String = ""
+    
     
     @IBOutlet weak var articlesTabelView: UITableView!
     
@@ -46,14 +51,15 @@ class HomeViewController: UIViewController {
      
        
         loadSources()
-        loadArticles()
+        loadArticles(endpoint:APIClient.Endpoints.Everything, source: "abc-news")
        
     }
     
-    func loadArticles(){
-        articlesLoader.load(endpoint: .Everything, page: 1, source: "abc-news") { [weak self] (articles) in
+    func loadArticles(endpoint:APIClient.Endpoints, source:String){
+        articlesLoader.load(endpoint: endpoint, page: 1, source: source) { [weak self] (articles) in
             guard let strongSelf = self else { return }
             //            strongSelf.articles = Set<Article>(articles)
+            strongSelf.sourceFilter = source
             strongSelf.articles = articles
             strongSelf.articlesTabelView.reloadData()
         }
@@ -89,6 +95,21 @@ class HomeViewController: UIViewController {
             
         }
     }
+    
+   
+    @IBAction func endpointsFilterClicked(_ sender: UISegmentedControl) {
+        switch sender.selectedSegmentIndex {
+        case 0:
+            self.endpointFilter = APIClient.Endpoints.Everything
+            loadArticles(endpoint: self.endpointFilter, source: sourceFilter)
+        case 1:
+            self.endpointFilter = APIClient.Endpoints.TopHeadlines
+            loadArticles(endpoint: self.endpointFilter, source: self.sourceFilter)
+        default:
+            break
+        }
+    }
+    
     /*
     // MARK: - Navigation
 
@@ -157,7 +178,7 @@ extension HomeViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         if searchBar == nil {
             searchBar = UISearchBar(frame: CGRect(x: 0, y: 0, width: articlesTabelView.frame.width, height: 44))
-            searchBar?.text = self.searchWord
+            searchBar?.text = self.searchWordFilter
             searchBar?.delegate = self
             searchBar?.backgroundColor = UIColor.white
             searchBar?.searchBarStyle = .minimal
@@ -170,14 +191,14 @@ extension HomeViewController : UISearchBarDelegate {
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         searchBar.resignFirstResponder()
         if searchBar.text?.count == 0 {
-            searchWord = ""
+            searchWordFilter = ""
             articles = []
             articlesTabelView.reloadData()
         }
     }
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        searchWord = searchBar.text ?? ""
+        searchWordFilter = searchBar.text ?? ""
         
         
         
@@ -208,7 +229,11 @@ extension HomeViewController:UICollectionViewDelegate , UICollectionViewDataSour
         return CGSize(width: width + 10, height: 50)
     }
     
- 
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let source = self.sources[indexPath.row].id
+        loadArticles(endpoint: self.endpointFilter, source: source)
+//        self.articlesTabelView.reloadData()
+    }
     
     
 }
