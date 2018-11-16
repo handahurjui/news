@@ -49,16 +49,16 @@ extension ResponseArticle.Article {
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         title = try container.decode(String.self, forKey: .title)
-        description = try container.decode(String.self, forKey: .description)
-        url = try container.decode(String.self, forKey: .url)
+        description = try container.decodeIfPresent(String.self, forKey: .description)
+        url = try container.decodeIfPresent(String.self, forKey: .url)
         urlToImage = try container.decodeIfPresent(String.self, forKey: .urlToImage)
-        let dateString = try container.decode(String.self, forKey: .publishedAt)
+        let dateString = try container.decodeIfPresent(String.self, forKey: .publishedAt)
         let formatterFull = DateFormatter.iso8601Full
         let formatter = DateFormatter.iso8601ss
-        if let date = formatter.date(from: dateString) {
+        if let date = formatter.date(from: dateString ?? "") {
             publishedAt = date
         } else {
-            if let date = formatterFull.date(from: dateString) {
+            if let date = formatterFull.date(from: dateString ?? "") {
                 publishedAt = date
             } else {
                 throw DecodingError.dataCorruptedError(forKey: .publishedAt, in: container, debugDescription: "Date string does not match format expected by formatter.")

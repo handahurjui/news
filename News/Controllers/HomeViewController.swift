@@ -11,18 +11,23 @@ import SafariServices
 
 class HomeViewController: UIViewController {
 
+    @IBOutlet weak var leftBtn: UIButton!
+    @IBOutlet weak var rightBtn: UIButton!
+    
+    
     let networkClient = APIClient.sharedInstance
     
     var articlesLoader = Loader(APIClient.Endpoints.TopHeadlines)
 //    var articles : Set<Article> = []
     var articles : [ResponseArticle.Article] = []
+    var articleViewModel : [ArticleViewModel] = []
 //    var articlesViewModels : [ArticleViewModel] = []
     var sources : [ResponseSource.Source] = []
     var searchBar : UISearchBar?
     
     
-    var sourceFilter : String = ""
-    var endpointFilter : APIClient.Endpoints = .Everything
+    var sourceFilter : String = "abc-news"
+    var endpointFilter : String = APIClient.Endpoints.Everything.description
     var searchWordFilter: String = ""
     
     
@@ -43,6 +48,10 @@ class HomeViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        let refreshController = UIRefreshControl()
+        refreshController.addTarget(self, action: #selector(loadArticles), for: .valueChanged)
+        articlesTabelView.refreshControl = refreshController
+        
         articlesTabelView.estimatedRowHeight = 125
         articlesTabelView.rowHeight = UITableView.automaticDimension
         
@@ -51,17 +60,23 @@ class HomeViewController: UIViewController {
      
        
         loadSources()
-        loadArticles(endpoint:APIClient.Endpoints.Everything, source: "abc-news")
+        loadArticles()
        
     }
     
-    func loadArticles(endpoint:APIClient.Endpoints, source:String){
-        articlesLoader.load(endpoint: endpoint, page: 1, source: source) { [weak self] (articles) in
+    @objc func loadArticles(){
+        articlesTabelView.refreshControl?.beginRefreshing()
+        articlesLoader.load(endpoint: self.endpointFilter, page: 1, source: self.sourceFilter) { [weak self] (articles) in
             guard let strongSelf = self else { return }
             //            strongSelf.articles = Set<Article>(articles)
-            strongSelf.sourceFilter = source
-            strongSelf.articles = articles
+            
+//            strongSelf.articles = articles
+            strongSelf.articleViewModel = articles.map({ (article)  in
+                ArticleViewModel(article: article)
+            })
             strongSelf.articlesTabelView.reloadData()
+            strongSelf.articlesTabelView.refreshControl?.endRefreshing()
+            strongSelf.articlesTabelView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: true)
         }
         
 //        networkClient.getArticles(withEndpoint: .TopHeadlines, page: 1,source: "abc-news" ) { [weak self] (articles) in
@@ -75,11 +90,14 @@ class HomeViewController: UIViewController {
     }
 
     func loadMoreArticles(){
-        articlesLoader.next(endpoint: .Everything, source: "abc-news") { [weak self] (articles) in
+        articlesLoader.next(endpoint: self.endpointFilter, source: self.sourceFilter) { [weak self] (articles) in
             guard let strongSelf = self else { return }
             strongSelf.spinner.stopAnimating()
             strongSelf.articlesTabelView.tableFooterView?.isHidden = true
-            strongSelf.articles += articles
+//            strongSelf.articles += articles
+            strongSelf.articleViewModel += articles.map({ (article)  in
+                ArticleViewModel(article: article)
+            })
             strongSelf.articlesTabelView.reloadData()
         }
         
@@ -100,11 +118,11 @@ class HomeViewController: UIViewController {
     @IBAction func endpointsFilterClicked(_ sender: UISegmentedControl) {
         switch sender.selectedSegmentIndex {
         case 0:
-            self.endpointFilter = APIClient.Endpoints.Everything
-            loadArticles(endpoint: self.endpointFilter, source: sourceFilter)
+            self.endpointFilter = APIClient.Endpoints.Everything.description
+            loadArticles()
         case 1:
-            self.endpointFilter = APIClient.Endpoints.TopHeadlines
-            loadArticles(endpoint: self.endpointFilter, source: self.sourceFilter)
+            self.endpointFilter = APIClient.Endpoints.TopHeadlines.description
+            loadArticles()
         default:
             break
         }
@@ -119,29 +137,49 @@ class HomeViewController: UIViewController {
         // Pass the selected object to the new view controller.
     }
     */
-
+    @IBAction func leftBtnClicked(_ sender: Any) {
+        let collectionViewWidth =  self.sourcesCollectionView.bounds.width
+        let distanceToMove = self.sourcesCollectionView.contentOffset.x - collectionViewWidth
+         self.moveScroll(withDistance: distanceToMove)
+    }
+    @IBAction func rightBtnClicked(_ sender: Any) {
+        let collectionViewWidth =  self.sourcesCollectionView.bounds.width
+        let distanceToMove = self.sourcesCollectionView.contentOffset.x + collectionViewWidth
+        self.moveScroll(withDistance: distanceToMove)
+    }
+    func moveScroll(withDistance : CGFloat){
+        let collectionViewFrame = CGRect(x: withDistance, y: self.sourcesCollectionView.contentOffset.y, width: self.sourcesCollectionView.frame.width, height: self.sourcesCollectionView.frame.height)
+        self.sourcesCollectionView.scrollRectToVisible(collectionViewFrame, animated: true)
+    }
 }
 extension HomeViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        guard let url = self.articles[indexPath.row].articleURL else { return }
-//        guard let url = Array(articles)[indexPath.row].articleURL else {
-//            return
-//        }
-        let safariVC = SFSafariViewController(url: url)
-        self.present(safariVC, animated: true, completion: nil)
+//        guard let url = self.articles[indexPath.row].articleURL else { return }
+////        guard let url = Array(articles)[indexPath.row].articleURL else {
+////            return
+////        }
+//        let safariVC = SFSafariViewController(url: url)
+//        self.present(safariVC, animated: true, completion: nil)
     }
 }
 extension HomeViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.articles.count  //+ (articlesLoader.hasMore ? 1 : 0)
+//        return self.articles.count  //+ (articlesLoader.hasMore ? 1 : 0)
+        return self.articleViewModel.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
         let cell = self.articlesTabelView.dequeueReusableCell(withIdentifier: "ArticleTableViewCell", for: indexPath) as! ArticleTableViewCell
 //        cell.titleArticleLbl.text = self.articles[indexPath.row].title
 //        cell.titleArticleLbl.text = Array(articles)[indexPath.row].title
-        cell.article = self.articles[indexPath.row]
+        
+//        cell.article = self.articles[indexPath.row]
+        
+        let articleViewModel = self.articleViewModel[indexPath.row]
+        articleViewModel.configure(view: cell)
+        
         return cell
     }
     
@@ -215,8 +253,30 @@ extension HomeViewController:UICollectionViewDelegate , UICollectionViewDataSour
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return self.sources.count
     }
-    
+ 
+    func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        if (indexPath.row == 0) {
+            leftBtn.isHidden = false
+        } else if (indexPath.row == self.sources.count - 1) {
+            rightBtn.isHidden = false
+        }
+    }
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        if (indexPath.row == self.sources.count - 1) {
+            self.rightBtn.isHidden = true
+        } else if (indexPath.row == 0) {
+            self.leftBtn.isHidden = true
+        }
+    }
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+//        if (indexPath.row == 0 ) {
+//            leftBtn.isHidden = true
+//        } else if (indexPath.row == self.sources.count) {
+//            rightBtn.isHidden = true
+//        } else {
+//            leftBtn.isHidden = false
+//            rightBtn.isHidden = false
+//        }
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "TabBarCollectionViewCell", for: indexPath) as! TabBarCollectionViewCell
         cell.tabBarTitleLbl.text = self.sources[indexPath.row].name
         
@@ -230,8 +290,9 @@ extension HomeViewController:UICollectionViewDelegate , UICollectionViewDataSour
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let source = self.sources[indexPath.row].id
-        loadArticles(endpoint: self.endpointFilter, source: source)
+        sourceFilter = self.sources[indexPath.row].id
+        collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
+        loadArticles()
 //        self.articlesTabelView.reloadData()
     }
     

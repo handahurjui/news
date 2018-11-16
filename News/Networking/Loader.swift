@@ -22,7 +22,7 @@ class Loader {
         self.endpoint = endpoint
     }
     
-    func load(endpoint: APIClient.Endpoints,page: Int = 1,source: String = "abc-news" , completion: @escaping LoaderCompletion) {
+    func load(endpoint: String,page: Int = 1,source: String = "abc-news" , completion: @escaping LoaderCompletion) {
         if isLoading { return }
         
         isLoading = true
@@ -39,7 +39,7 @@ class Loader {
         
     }
     
-    func next(endpoint: APIClient.Endpoints,source: String = "abc-news" ,completion: @escaping (_ articles:[ResponseArticle.Article]) ->()) {
+    func next(endpoint: String,source: String = "abc-news" ,completion: @escaping (_ articles:[ResponseArticle.Article]) ->()) {
         if isLoading {
             return
         }

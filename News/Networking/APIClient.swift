@@ -77,7 +77,7 @@ class APIClient {
             }
         }
     }
-    func getArticles(withEndpoint: Endpoints,page: Int = 1,source: String = "abc-news" , completion: @escaping ([ResponseArticle.Article])-> Void ){
+    func getArticles(withEndpoint: String,page: Int = 1,source: String = "abc-news" , completion: @escaping ([ResponseArticle.Article])-> Void ){
         let urlString =  baseURL + "/" + withEndpoint.description
         
         let headers = [

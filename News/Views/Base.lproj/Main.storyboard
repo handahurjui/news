@@ -19,7 +19,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="hgK-zn-sNp">
-                                <rect key="frame" x="8" y="72" width="359" height="64"/>
+                                <rect key="frame" x="30" y="72" width="315" height="64"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="64" id="XhU-1r-yGP"/>
@@ -73,6 +73,19 @@
                                     <outlet property="delegate" destination="BYZ-38-t0r" id="IDT-Cy-cUf"/>
                                 </connections>
                             </collectionView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ANb-nF-PEq">
+                                <rect key="frame" x="345" y="72" width="30" height="64"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="30" id="60L-cE-llc"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                                <state key="normal" title="&gt;">
+                                    <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                </state>
+                                <connections>
+                                    <action selector="rightBtnClicked:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Cs6-4V-S1e"/>
+                                </connections>
+                            </button>
                             <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="DJ0-aR-aiY">
                                 <rect key="frame" x="34" y="144" width="303" height="29"/>
                                 <segments>
@@ -148,16 +161,35 @@
                                     <outlet property="delegate" destination="BYZ-38-t0r" id="Pu5-WL-TH9"/>
                                 </connections>
                             </tableView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GhF-fH-hC1">
+                                <rect key="frame" x="0.0" y="72" width="30" height="64"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="30" id="cPh-6V-VWS"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                                <state key="normal" title="&lt;">
+                                    <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                </state>
+                                <connections>
+                                    <action selector="leftBtnClicked:" destination="BYZ-38-t0r" eventType="touchUpInside" id="7xY-00-n7m"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="hgK-zn-sNp" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="8" id="BYy-lm-sLO"/>
+                            <constraint firstItem="GhF-fH-hC1" firstAttribute="height" secondItem="hgK-zn-sNp" secondAttribute="height" id="24k-xG-Rnd"/>
+                            <constraint firstItem="ANb-nF-PEq" firstAttribute="centerY" secondItem="hgK-zn-sNp" secondAttribute="centerY" id="9g3-y2-ZwU"/>
                             <constraint firstItem="DJ0-aR-aiY" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="34" id="C6E-Mm-ffP"/>
                             <constraint firstItem="e8x-8g-XXp" firstAttribute="top" secondItem="DJ0-aR-aiY" secondAttribute="bottom" constant="8" id="F8p-AH-Y7a"/>
+                            <constraint firstItem="ANb-nF-PEq" firstAttribute="leading" secondItem="hgK-zn-sNp" secondAttribute="trailing" id="LiE-pj-A49"/>
                             <constraint firstItem="e8x-8g-XXp" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="MbK-L6-B4Y"/>
+                            <constraint firstItem="ANb-nF-PEq" firstAttribute="height" secondItem="hgK-zn-sNp" secondAttribute="height" id="Ora-2U-QfK"/>
                             <constraint firstItem="DJ0-aR-aiY" firstAttribute="top" secondItem="hgK-zn-sNp" secondAttribute="bottom" constant="8" id="XHk-JL-wc4"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="DJ0-aR-aiY" secondAttribute="trailing" constant="38" id="bIM-nd-Lg4"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="hgK-zn-sNp" secondAttribute="trailing" constant="8" id="hyY-gQ-FS9"/>
+                            <constraint firstItem="GhF-fH-hC1" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="bNQ-NP-ZNg"/>
+                            <constraint firstItem="GhF-fH-hC1" firstAttribute="centerY" secondItem="hgK-zn-sNp" secondAttribute="centerY" id="ffo-vM-bh7"/>
+                            <constraint firstItem="hgK-zn-sNp" firstAttribute="leading" secondItem="GhF-fH-hC1" secondAttribute="trailing" id="iUr-Fm-rJg"/>
+                            <constraint firstItem="ANb-nF-PEq" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="m2z-AX-h6S"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="e8x-8g-XXp" secondAttribute="bottom" id="uPh-Zp-OcJ"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="e8x-8g-XXp" secondAttribute="trailing" id="v8j-gN-sba"/>
                             <constraint firstItem="hgK-zn-sNp" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="8" id="yv9-fX-MSM"/>
@@ -168,6 +200,8 @@
                     <connections>
                         <outlet property="articlesTabelView" destination="e8x-8g-XXp" id="9Fr-wL-Su7"/>
                         <outlet property="endpointSegmentedController" destination="DJ0-aR-aiY" id="7Eb-eX-prw"/>
+                        <outlet property="leftBtn" destination="GhF-fH-hC1" id="wvB-nF-0zF"/>
+                        <outlet property="rightBtn" destination="ANb-nF-PEq" id="VI4-ek-FHT"/>
                         <outlet property="sourcesCollectionView" destination="hgK-zn-sNp" id="B2C-Xq-5BJ"/>
                     </connections>
                 </viewController>
