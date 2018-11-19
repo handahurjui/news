@@ -19,7 +19,7 @@ class HomeViewController: UIViewController {
     
     var articlesLoader = Loader(APIClient.Endpoints.TopHeadlines)
 //    var articles : Set<Article> = []
-    var articles : [ResponseArticle.Article] = []
+//    var articles : [ResponseArticle.Article] = []
     var articleViewModel : [ArticleViewModel] = []
 //    var articlesViewModels : [ArticleViewModel] = []
     var sources : [ResponseSource.Source] = []
@@ -28,7 +28,7 @@ class HomeViewController: UIViewController {
     
     var sourceFilter : String = "abc-news"
     var endpointFilter : String = APIClient.Endpoints.Everything.description
-    var searchWordFilter: String = ""
+    var searchWordFilter: String? = nil
     
     
     @IBOutlet weak var articlesTabelView: UITableView!
@@ -63,10 +63,17 @@ class HomeViewController: UIViewController {
         loadArticles()
        
     }
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        if let selectedIndexPath = self.articlesTabelView.indexPathForSelectedRow {
+            self.articlesTabelView.deselectRow(at: selectedIndexPath, animated: false)
+        }
+    }
+    
     
     @objc func loadArticles(){
         articlesTabelView.refreshControl?.beginRefreshing()
-        articlesLoader.load(endpoint: self.endpointFilter, page: 1, source: self.sourceFilter) { [weak self] (articles) in
+        articlesLoader.load(query: self.searchWordFilter,endpoint: self.endpointFilter, page: 1, source: self.sourceFilter) { [weak self] (articles) in
             guard let strongSelf = self else { return }
             //            strongSelf.articles = Set<Article>(articles)
             
@@ -159,8 +166,9 @@ extension HomeViewController: UITableViewDelegate {
 ////        guard let url = Array(articles)[indexPath.row].articleURL else {
 ////            return
 ////        }
-//        let safariVC = SFSafariViewController(url: url)
-//        self.present(safariVC, animated: true, completion: nil)
+        guard let url = self.articleViewModel[indexPath.row].imageURL else { return }
+        let safariVC = SFSafariViewController(url: url)
+        self.present(safariVC, animated: true, completion: nil)
     }
 }
 extension HomeViewController: UITableViewDataSource {
@@ -214,14 +222,14 @@ extension HomeViewController: UITableViewDataSource {
         
     }
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        if searchBar == nil {
+        
             searchBar = UISearchBar(frame: CGRect(x: 0, y: 0, width: articlesTabelView.frame.width, height: 44))
             searchBar?.text = self.searchWordFilter
             searchBar?.delegate = self
             searchBar?.backgroundColor = UIColor.white
             searchBar?.searchBarStyle = .minimal
-            //            searchBar?.showsCancelButton = true
-        }
+            searchBar?.showsCancelButton = true
+        
         return searchBar
     }
 }
@@ -229,18 +237,30 @@ extension HomeViewController : UISearchBarDelegate {
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         searchBar.resignFirstResponder()
         if searchBar.text?.count == 0 {
-            searchWordFilter = ""
-            articles = []
+            searchWordFilter = nil
+            self.articleViewModel = []
+            loadArticles()
             articlesTabelView.reloadData()
         }
     }
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        searchWordFilter = searchBar.text ?? ""
+        searchWordFilter = searchBar.text ?? nil
         
-        
-        
+//        if searchWordFilter.length > 0 {
+//            
+//        }
+        loadArticles()
+        articlesTabelView.reloadData()
         searchBar.resignFirstResponder()
+    }
+    func searchBarShouldBeginEditing(_ searchBar: UISearchBar) -> Bool {
+        self.searchBar?.setShowsCancelButton(true, animated: true)
+        return true
+    }
+    func searchBarShouldEndEditing(_ searchBar: UISearchBar) -> Bool {
+        self.searchBar?.setShowsCancelButton(false, animated: true)
+        return true
     }
 }
 extension HomeViewController:UICollectionViewDelegate , UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
