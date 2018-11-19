@@ -83,7 +83,9 @@ class HomeViewController: UIViewController {
             })
             strongSelf.articlesTabelView.reloadData()
             strongSelf.articlesTabelView.refreshControl?.endRefreshing()
-            strongSelf.articlesTabelView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: true)
+            if strongSelf.articlesLoader.hasMore {
+                strongSelf.articlesTabelView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: true)
+            }
         }
         
 //        networkClient.getArticles(withEndpoint: .TopHeadlines, page: 1,source: "abc-news" ) { [weak self] (articles) in
@@ -97,7 +99,7 @@ class HomeViewController: UIViewController {
     }
 
     func loadMoreArticles(){
-        articlesLoader.next(endpoint: self.endpointFilter, source: self.sourceFilter) { [weak self] (articles) in
+        articlesLoader.next(query: self.searchWordFilter,endpoint: self.endpointFilter, source: self.sourceFilter) { [weak self] (articles) in
             guard let strongSelf = self else { return }
             strongSelf.spinner.stopAnimating()
             strongSelf.articlesTabelView.tableFooterView?.isHidden = true
@@ -248,7 +250,7 @@ extension HomeViewController : UISearchBarDelegate {
         searchWordFilter = searchBar.text ?? nil
         
 //        if searchWordFilter.length > 0 {
-//            
+//
 //        }
         loadArticles()
         articlesTabelView.reloadData()

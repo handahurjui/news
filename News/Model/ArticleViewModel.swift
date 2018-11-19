@@ -13,8 +13,11 @@ import SDWebImage
 protocol ArticleViewModelView {
     var titleLbl :  UILabel { get }
     var dateLbl: UILabel { get }
-    var imageImageView : UIImageView { get }
+    var imageImageView : UIImageView? { get }
     var descriptionLbl : UILabel { get }
+}
+extension ArticleViewModelView {
+    var imageImageView: UIImageView? { return nil }
 }
 class ArticleViewModel {
     
@@ -55,7 +58,13 @@ class ArticleViewModel {
 //        }
     }
     func configure (view: ArticleViewModelView) {
-        view.imageImageView.sd_setImage(with: imageURL, completed: nil)
+        if let imageURL = imageURL {
+            _ = view.imageImageView?.sd_setImage(with: imageURL, completed: nil)
+            view.imageImageView?.isHidden = false
+        } else {
+            view.imageImageView?.isHidden =  true 
+        }
+        
         view.titleLbl.text = title
         view.dateLbl.text = date
         view.descriptionLbl.text = description

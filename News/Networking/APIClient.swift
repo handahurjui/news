@@ -77,7 +77,7 @@ class APIClient {
             }
         }
     }
-    func getArticles(withEndpoint: String,page: Int = 1,source: String = "abc-news" , completion: @escaping ([ResponseArticle.Article])-> Void ){
+    func getArticles(query: String?,withEndpoint: String,page: Int = 1,source: String = "abc-news" , completion: @escaping ([ResponseArticle.Article])-> Void ){
         let urlString =  baseURL + "/" + withEndpoint.description
         
         let headers = [
@@ -90,6 +90,7 @@ class APIClient {
             "sources": source
         ]
         
+        parameters["q"] = query
         
         Alamofire.request(URL(string: urlString)!, method: .get, parameters: parameters, encoding: URLEncoding.default, headers: headers).responseData { (response) in
             

@@ -22,11 +22,11 @@ class Loader {
         self.endpoint = endpoint
     }
     
-    func load(endpoint: String,page: Int = 1,source: String = "abc-news" , completion: @escaping LoaderCompletion) {
+    func load(query: String? = nil, endpoint: String,page: Int = 1,source: String = "abc-news" , completion: @escaping LoaderCompletion) {
         if isLoading { return }
         
         isLoading = true
-        networkClient.getArticles(withEndpoint: endpoint, page: page, source: source)  { [weak self] articles in
+        networkClient.getArticles(query: query, withEndpoint: endpoint, page: page, source: source)  { [weak self] articles in
             guard let strongSelf = self else { return }
             strongSelf.hasMore = articles.count > 0
             
@@ -39,12 +39,12 @@ class Loader {
         
     }
     
-    func next(endpoint: String,source: String = "abc-news" ,completion: @escaping (_ articles:[ResponseArticle.Article]) ->()) {
+    func next(query: String? = nil,endpoint: String,source: String = "abc-news" ,completion: @escaping (_ articles:[ResponseArticle.Article]) ->()) {
         if isLoading {
             return
         }
         
         page = page + 1
-        load(endpoint: endpoint, page: page, completion: completion)
+        load(query: query, endpoint: endpoint, page: page, completion: completion)
     }
 }

@@ -42,10 +42,10 @@ class ArticleTableViewCell: UITableViewCell {
         // Initialization code
     }
     override func prepareForReuse() {
-        articleImageView.sd_cancelCurrentImageLoad()
-        articleTitleLbl.text = nil
-        articleDateLbl.text = nil
-        articleDescriptionLbl.text = nil
+//        articleImageView?.sd_cancelCurrentImageLoad()
+//        articleTitleLbl.text = nil
+//        articleDateLbl.text = nil
+//        articleDescriptionLbl.text = nil
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
@@ -56,11 +56,13 @@ class ArticleTableViewCell: UITableViewCell {
 
 }
 extension ArticleTableViewCell : ArticleViewModelView {
+
+    
     var descriptionLbl: UILabel {
         return articleDescriptionLbl
     }
     
-    var imageImageView: UIImageView {
+    var imageImageView: UIImageView? {
         return articleImageView
     }
     
