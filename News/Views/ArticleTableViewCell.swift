@@ -10,13 +10,20 @@ import UIKit
 
 import SDWebImage
 
+
+protocol ArticleTableViewCellDelegate: class {
+    func readMoreBtnClicked(cell: ArticleTableViewCell)
+}
+
 class ArticleTableViewCell: UITableViewCell {
 
     @IBOutlet weak var articleTitleLbl: UILabel!
     @IBOutlet weak var articleImageView: UIImageView!
     @IBOutlet weak var articleDateLbl: UILabel!
     @IBOutlet weak var articleDescriptionLbl: UILabel!
+
     
+    weak var delegate: ArticleTableViewCellDelegate?
 //    var article : ResponseArticle.Article? {
 //        didSet {
 //             guard let article = article else { return }
@@ -54,6 +61,12 @@ class ArticleTableViewCell: UITableViewCell {
         // Configure the view for the selected state
     }
 
+    @IBAction func readMoreBtnClicked(_ sender: Any) {
+      
+        delegate?.readMoreBtnClicked(cell: self)
+    }
+    
+    
 }
 extension ArticleTableViewCell : ArticleViewModelView {
 
@@ -74,6 +87,6 @@ extension ArticleTableViewCell : ArticleViewModelView {
         return articleDateLbl
     }
     
- 
+    
     
 }

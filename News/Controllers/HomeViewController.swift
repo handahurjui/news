@@ -9,7 +9,9 @@
 import UIKit
 import SafariServices
 
-class HomeViewController: UIViewController {
+class HomeViewController: UIViewController, ArticleTableViewCellDelegate {
+   
+    
 
     @IBOutlet weak var leftBtn: UIButton!
     @IBOutlet weak var rightBtn: UIButton!
@@ -160,6 +162,14 @@ class HomeViewController: UIViewController {
         let collectionViewFrame = CGRect(x: withDistance, y: self.sourcesCollectionView.contentOffset.y, width: self.sourcesCollectionView.frame.width, height: self.sourcesCollectionView.frame.height)
         self.sourcesCollectionView.scrollRectToVisible(collectionViewFrame, animated: true)
     }
+    
+    func readMoreBtnClicked(cell: ArticleTableViewCell) {
+        let indexPathForReadMore = self.articlesTabelView.indexPath(for: cell)
+        self.articleViewModel[(indexPathForReadMore?.row)!].isExpanded = !self.articleViewModel[(indexPathForReadMore?.row)!].isExpanded 
+        articlesTabelView.reloadRows(at: [indexPathForReadMore!], with: .automatic)
+    }
+  
+    
 }
 extension HomeViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -189,7 +199,7 @@ extension HomeViewController: UITableViewDataSource {
         
         let articleViewModel = self.articleViewModel[indexPath.row]
         articleViewModel.configure(view: cell)
-        
+        cell.delegate  = self
         return cell
     }
     

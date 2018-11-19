@@ -25,6 +25,7 @@ class ArticleViewModel {
     var date : String
     var imageURL : URL?
     var description : String
+    var isExpanded : Bool = false
     
     init(article: ResponseArticle.Article) {
         title = article.title
@@ -64,7 +65,7 @@ class ArticleViewModel {
         } else {
             view.imageImageView?.isHidden =  true 
         }
-        
+        view.descriptionLbl.isHidden = isExpanded
         view.titleLbl.text = title
         view.dateLbl.text = date
         view.descriptionLbl.text = description
