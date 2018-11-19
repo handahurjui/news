@@ -15,6 +15,7 @@ protocol ArticleViewModelView {
     var dateLbl: UILabel { get }
     var imageImageView : UIImageView? { get }
     var descriptionLbl : UILabel { get }
+    var readMoreBtn : UIButton { get }
 }
 extension ArticleViewModelView {
     var imageImageView: UIImageView? { return nil }
@@ -65,7 +66,14 @@ class ArticleViewModel {
         } else {
             view.imageImageView?.isHidden =  true 
         }
-        view.descriptionLbl.isHidden = isExpanded
+//        view.descriptionLbl.isHidden = isExpanded
+        if isExpanded {
+            view.descriptionLbl.numberOfLines = 0
+            view.readMoreBtn.setTitle("Read Less", for: .normal)
+        } else {
+            view.descriptionLbl.numberOfLines = 1
+            view.readMoreBtn.setTitle("Read More", for: .normal)
+        }
         view.titleLbl.text = title
         view.dateLbl.text = date
         view.descriptionLbl.text = description

@@ -21,7 +21,9 @@ class ArticleTableViewCell: UITableViewCell {
     @IBOutlet weak var articleImageView: UIImageView!
     @IBOutlet weak var articleDateLbl: UILabel!
     @IBOutlet weak var articleDescriptionLbl: UILabel!
-
+    @IBOutlet weak var articleReadMoreBtn: UIButton!
+    
+    
     
     weak var delegate: ArticleTableViewCellDelegate?
 //    var article : ResponseArticle.Article? {
@@ -69,6 +71,10 @@ class ArticleTableViewCell: UITableViewCell {
     
 }
 extension ArticleTableViewCell : ArticleViewModelView {
+    var readMoreBtn: UIButton {
+        return articleReadMoreBtn
+    }
+    
 
     
     var descriptionLbl: UILabel {

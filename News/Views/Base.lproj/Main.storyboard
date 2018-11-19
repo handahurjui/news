@@ -120,26 +120,26 @@
                                                             <rect key="frame" x="0.0" y="0.0" width="375" height="324.5"/>
                                                             <subviews>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="249" text="Label" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="laM-WP-5S3">
-                                                                    <rect key="frame" x="0.0" y="0.0" width="375" height="280"/>
+                                                                    <rect key="frame" x="0.0" y="0.0" width="375" height="260.5"/>
                                                                     <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                                                     <nil key="textColor"/>
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="date" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RWD-hA-WOn">
-                                                                    <rect key="frame" x="0.0" y="280" width="375" height="14.5"/>
+                                                                    <rect key="frame" x="0.0" y="260.5" width="375" height="14.5"/>
                                                                     <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                                     <nil key="textColor"/>
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
                                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Tca-Dd-iJb">
-                                                                    <rect key="frame" x="0.0" y="294.5" width="375" height="30"/>
+                                                                    <rect key="frame" x="0.0" y="275" width="375" height="30"/>
                                                                     <state key="normal" title="Read More"/>
                                                                     <connections>
-                                                                        <action selector="readMoreBtnClicked:" destination="xyY-wp-bcc" eventType="touchUpInside" id="23i-dJ-FvR"/>
+                                                                        <action selector="readMoreBtnClicked:" destination="xyY-wp-bcc" eventType="touchUpInside" id="2G5-zm-Yy3"/>
                                                                     </connections>
                                                                 </button>
-                                                                <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="description" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="k10-O3-pTe">
-                                                                    <rect key="frame" x="0.0" y="324.5" width="375" height="0.0"/>
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="description" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="k10-O3-pTe">
+                                                                    <rect key="frame" x="0.0" y="305" width="375" height="19.5"/>
                                                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                                     <nil key="textColor"/>
                                                                     <nil key="highlightedColor"/>
@@ -160,6 +160,7 @@
                                             <outlet property="articleDateLbl" destination="RWD-hA-WOn" id="byD-9R-tFj"/>
                                             <outlet property="articleDescriptionLbl" destination="k10-O3-pTe" id="9U9-fi-8GC"/>
                                             <outlet property="articleImageView" destination="ffp-2q-wS9" id="XXL-mS-NsT"/>
+                                            <outlet property="articleReadMoreBtn" destination="Tca-Dd-iJb" id="xrY-Xb-PF9"/>
                                             <outlet property="articleTitleLbl" destination="laM-WP-5S3" id="eFo-1X-sFg"/>
                                         </connections>
                                     </tableViewCell>
