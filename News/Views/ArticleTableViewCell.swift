@@ -18,7 +18,13 @@ protocol ArticleTableViewCellDelegate: class {
 class ArticleTableViewCell: UITableViewCell {
 
     @IBOutlet weak var articleTitleLbl: UILabel!
-    @IBOutlet weak var articleImageView: UIImageView!
+    @IBOutlet weak var articleImageView: UIImageView! {
+        didSet {
+            articleImageView.clipsToBounds = true
+            articleImageView.layer.cornerRadius = 12.5
+           
+        }
+    }
     @IBOutlet weak var articleDateLbl: UILabel!
     @IBOutlet weak var articleDescriptionLbl: UILabel!
     @IBOutlet weak var articleReadMoreBtn: UIButton!

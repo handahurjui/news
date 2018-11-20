@@ -50,15 +50,18 @@ class HomeViewController: UIViewController, ArticleTableViewCellDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        
+        
         let refreshController = UIRefreshControl()
         refreshController.addTarget(self, action: #selector(loadArticles), for: .valueChanged)
         articlesTabelView.refreshControl = refreshController
         
         articlesTabelView.estimatedRowHeight = 125
         articlesTabelView.rowHeight = UITableView.automaticDimension
-        
+        navigationController?.title = "Latest News !"
+        self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font: UIFont.preferredFont(forTextStyle: .headline)]
         // Do any additional setup after loading the view.
-        
+      
      
        
         loadSources()
@@ -70,9 +73,25 @@ class HomeViewController: UIViewController, ArticleTableViewCellDelegate {
         if let selectedIndexPath = self.articlesTabelView.indexPathForSelectedRow {
             self.articlesTabelView.deselectRow(at: selectedIndexPath, animated: false)
         }
+      
     }
     
-    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        NotificationCenter.default.addObserver(forName: UIContentSizeCategory.didChangeNotification, object: .none, queue: OperationQueue.main) { [weak self] _ in
+            guard let strongSelf = self else { return }
+            strongSelf.articlesTabelView.reloadData()
+           
+            let selectedTabBarIndexPath = strongSelf.sourcesCollectionView.indexPathsForSelectedItems?.first
+                
+            
+            strongSelf.sourcesCollectionView.reloadData()
+            if let selectedTabBarIndexPath = selectedTabBarIndexPath  { strongSelf.sourcesCollectionView.selectItem(at: selectedTabBarIndexPath, animated: false, scrollPosition: .left) }
+            
+        }
+      
+    }
     @objc func loadArticles(){
         articlesTabelView.refreshControl?.beginRefreshing()
         articlesLoader.load(query: self.searchWordFilter,endpoint: self.endpointFilter, page: 1, source: self.sourceFilter) { [weak self] (articles) in
@@ -119,9 +138,9 @@ class HomeViewController: UIViewController, ArticleTableViewCellDelegate {
             guard let strongSelf = self else { return }
             strongSelf.sources = sources
             strongSelf.sourcesCollectionView.reloadData()
-            let selectedIndexPath = IndexPath(item: 0, section: 0)
-            strongSelf.sourcesCollectionView.selectItem(at: selectedIndexPath, animated: false, scrollPosition: .left)
-            
+//            if sources.count > 0 {
+                strongSelf.sourcesCollectionView.selectItem(at: IndexPath(item: 0, section: 0), animated: false, scrollPosition: .left)
+//            }
         }
     }
     
@@ -309,14 +328,16 @@ extension HomeViewController:UICollectionViewDelegate , UICollectionViewDataSour
 //            leftBtn.isHidden = false
 //            rightBtn.isHidden = false
 //        }
+         let titleAttributes = [NSAttributedString.Key.font: UIFont.preferredFont(forTextStyle: .headline)]
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "TabBarCollectionViewCell", for: indexPath) as! TabBarCollectionViewCell
-        cell.tabBarTitleLbl.text = self.sources[indexPath.row].name
+//        cell.tabBarTitleLbl.text = self.sources[indexPath.row].name
+        cell.tabBarTitleLbl.attributedText = NSAttributedString(string: "\(self.sources[indexPath.row].name)", attributes: titleAttributes)
         
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let width = sources[indexPath.row].name.width(withConstrainedHeight: 50, font: UIFont.systemFont(ofSize: 17.0))
+        let width = sources[indexPath.row].name.width(withConstrainedHeight: 50, font: UIFont.preferredFont(forTextStyle: .headline))
         
         return CGSize(width: width + 10, height: 50)
     }

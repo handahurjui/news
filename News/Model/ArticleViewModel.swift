@@ -59,8 +59,15 @@ class ArticleViewModel {
 //            articleImageView.sd_setImage(with: article.imageURL, completed: nil)
 //        }
     }
+
     func configure (view: ArticleViewModelView) {
+        let titleAttributes = [NSAttributedString.Key.font: UIFont.preferredFont(forTextStyle: .headline), NSAttributedString.Key.foregroundColor: UIColor.blue]
+        let subtitleAttributes = [NSAttributedString.Key.font: UIFont.preferredFont(forTextStyle: .subheadline)]
+        
+        
         if let imageURL = imageURL {
+            view.imageImageView?.sd_setShowActivityIndicatorView(true)
+            view.imageImageView?.sd_setIndicatorStyle(.gray)
             _ = view.imageImageView?.sd_setImage(with: imageURL, completed: nil)
             view.imageImageView?.isHidden = false
         } else {
@@ -74,9 +81,9 @@ class ArticleViewModel {
             view.descriptionLbl.numberOfLines = 1
             view.readMoreBtn.setTitle("Read More", for: .normal)
         }
-        view.titleLbl.text = title
+        view.titleLbl.attributedText = NSAttributedString(string: "\(title)", attributes: titleAttributes)
         view.dateLbl.text = date
-        view.descriptionLbl.text = description
+        view.descriptionLbl.attributedText = NSMutableAttributedString(string: "\(description)", attributes: subtitleAttributes)
         
     }
 }
