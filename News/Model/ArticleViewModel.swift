@@ -24,9 +24,19 @@ class ArticleViewModel {
     
     var title : String
     var date : String
-    var imageURL : URL?
+    var imageURL : URL? 
     var description : String
     var isExpanded : Bool = false
+    
+    func isStringLink(string: String) -> Bool {
+        let types: NSTextCheckingResult.CheckingType = [.link]
+        let detector = try? NSDataDetector(types: types.rawValue)
+        guard (detector != nil && string.characters.count > 0) else { return false }
+        if detector!.numberOfMatches(in: string, options: NSRegularExpression.MatchingOptions(rawValue: 0), range: NSMakeRange(0, string.characters.count)) > 0 {
+            return true
+        }
+        return false
+    }
     
     init(article: ResponseArticle.Article) {
         title = article.title
@@ -47,8 +57,10 @@ class ArticleViewModel {
         }
        
         description = article.description ?? ""
-        imageURL = article.imageURL
         
+//        if let url = article.urlToImage?.isValidURL  {
+            imageURL =  article.imageURL
+//        }
         
 //        articleImageView.sd_setShowActivityIndicatorView(true)
 //        articleImageView.sd_setIndicatorStyle(.gray)

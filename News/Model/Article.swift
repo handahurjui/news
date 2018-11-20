@@ -37,7 +37,7 @@ struct ResponseArticle: Codable {
         }
         
         var imageURL : URL? {
-            if let url = urlToImage {
+            if let url = urlToImage, url.isValidURL {
                 return URL(string: url)
             }
             return nil
