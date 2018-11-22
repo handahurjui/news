@@ -56,12 +56,12 @@ class HomeViewController: UIViewController, ArticleTableViewCellDelegate {
         refreshController.addTarget(self, action: #selector(loadArticles), for: .valueChanged)
         articlesTabelView.refreshControl = refreshController
         
-        articlesTabelView.estimatedRowHeight = 125
+        articlesTabelView.estimatedRowHeight = 350
         articlesTabelView.rowHeight = UITableView.automaticDimension
-        navigationController?.title = "Latest News !"
+       
         self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font: UIFont.preferredFont(forTextStyle: .headline)]
         // Do any additional setup after loading the view.
-      
+        self.navigationController?.navigationBar.topItem?.title = "Latest News!"
      
        
         loadSources()
@@ -84,7 +84,7 @@ class HomeViewController: UIViewController, ArticleTableViewCellDelegate {
             strongSelf.articlesTabelView.reloadData()
            
             let selectedTabBarIndexPath = strongSelf.sourcesCollectionView.indexPathsForSelectedItems?.first
-                
+            
             
             strongSelf.sourcesCollectionView.reloadData()
             if let selectedTabBarIndexPath = selectedTabBarIndexPath  { strongSelf.sourcesCollectionView.selectItem(at: selectedTabBarIndexPath, animated: false, scrollPosition: .left) }
@@ -183,10 +183,15 @@ class HomeViewController: UIViewController, ArticleTableViewCellDelegate {
     }
     
     func readMoreBtnClicked(cell: ArticleTableViewCell) {
-        let indexPathForReadMore = self.articlesTabelView.indexPath(for: cell)
-        self.articleViewModel[(indexPathForReadMore?.row)!].isExpanded = !self.articleViewModel[(indexPathForReadMore?.row)!].isExpanded 
-        articlesTabelView.reloadRows(at: [indexPathForReadMore!], with: .automatic)
-    }
+        if let indexPathForReadMore = self.articlesTabelView.indexPath(for: cell) {
+            self.articleViewModel[(indexPathForReadMore.row)].isExpanded = !self.articleViewModel[(indexPathForReadMore.row)].isExpanded 
+            self.articlesTabelView.reloadData()
+        }
+        
+//        articlesTabelView.reloadRows(at: [indexPathForReadMore!], with: .none)
+//        cell.setNeedsLayout()
+//        cell.layoutIfNeeded()
+        }
   
     
 }
